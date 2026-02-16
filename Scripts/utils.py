@@ -18,7 +18,7 @@ def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
         if not file_path.exists():
             continue
         try:
-            df = pd.read_csv(file_path, encoding='latin-1', low_memory=False)
+            df = pd.read_csv(file_path, encoding='utf-8', low_memory=False)
             df['season_id'] = season
             dfs.append(df)
 
@@ -35,4 +35,4 @@ def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
 
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
-  return df.sort_values(by=["name", "kickoff_time", "GW", "season_id"])
+  return df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
