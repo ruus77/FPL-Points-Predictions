@@ -122,3 +122,30 @@ def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFram
     table = matches.groupby('team')['points'].sum().sort_values(ascending=False)
 
     return table.reset_index()
+
+
+
+
+
+
+
+def expected_stats_vs_actuals(df: pd.DataFrame,
+                              teams: pd.DataFrame,
+                              season: str | None = None,
+                              expected_stat: str | None = None,
+                              actual_stat: str | None = None,
+                              position: str | None = None) -> plt.Figure:
+    if (season is None) or (expected_stat is None) or (actual_stat is None) or (position is None):
+      return plt.figure()
+
+    fig, ax = plt.subplots(3, 2, figsize=(12, 8), sharey=True)
+
+    for i in range(3):
+        for j, team in enumerate([teams.iloc[i, 0], teams.iloc[-(i+1), 0]]):
+            sns.barplot(data=df[(df.team == team) & (df.season_id == season) & (df.position.isin([position]))][[expected_stat, actual_stat]].melt(),
+                        y="variable", x="value", estimator="sum", errorbar=None, ax=ax[i, j])
+            ax[i, j].set_title(f"{team} ({position})")
+            ax[i, j].set_ylabel("")
+            ax[i, j].set_xlabel("")
+    plt.tight_layout()
+    return fig
