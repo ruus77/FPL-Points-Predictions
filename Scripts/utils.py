@@ -72,22 +72,22 @@ def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFram
     if season is None:
         return pd.DataFrame()
 
-    df_season = df[df['season_id'] == season].copy()
+    df = df[df['season_id'] == season].copy()
 
     conditions = [
-        (df_season['team_h_score'] > df_season['team_a_score']),
-        (df_season['team_h_score'] == df_season['team_a_score']),
-        (df_season['team_h_score'] < df_season['team_a_score'])
+        (df['team_h_score'] > df['team_a_score']),
+        (df['team_h_score'] == df['team_a_score']),
+        (df['team_h_score'] < df['team_a_score'])
     ]
 
     pts_h = [3, 1, 0]
     pts_a = [0, 1, 3]
 
-    df_season['pts_h'] = np.select(conditions, pts_h)
-    df_season['pts_a'] = np.select(conditions, pts_a)
+    df['pts_h'] = np.select(conditions, pts_h)
+    df['pts_a'] = np.select(conditions, pts_a)
 
-    home_stats = df_season.groupby('team_h')['pts_h'].sum()
-    away_stats = df_season.groupby('team_a')['pts_a'].sum()
+    home_stats = df.groupby('team_h_score')['pts_h'].sum()
+    away_stats = df.groupby('team_a_score')['pts_a'].sum()
 
     table = (home_stats + away_stats).fillna(0).sort_values(ascending=False).astype(int)
 
