@@ -67,6 +67,9 @@ team_colors = {
 import pandas as pd
 import numpy as np
 
+import pandas as pd
+import numpy as np
+
 
 def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFrame:
     if season is None:
@@ -74,21 +77,18 @@ def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFram
 
     df = df[df['season_id'] == season].copy()
 
+    matches = df.drop_duplicates(subset=['fixture', 'team']).copy()
+
     conditions = [
-        (df['team_h_score'] > df['team_a_score']),
-        (df['team_h_score'] == df['team_a_score']),
-        (df['team_h_score'] < df['team_a_score'])
+        ((matches['was_home'] == True) & (matches['team_h_score'] > matches['team_a_score'])) |
+        ((matches['was_home'] == False) & (matches['team_a_score'] > matches['team_h_score'])),
+        (matches['team_h_score'] == matches['team_a_score'])
     ]
 
-    pts_h = [3, 1, 0]
-    pts_a = [0, 1, 3]
+    choices = [3, 1]
 
-    df['pts_h'] = np.select(conditions, pts_h)
-    df['pts_a'] = np.select(conditions, pts_a)
+    matches['points'] = np.select(conditions, choices, default=0)
 
-    home_stats = df.groupby('team_h_score')['pts_h'].sum()
-    away_stats = df.groupby('team_a_score')['pts_a'].sum()
+    table = matches.groupby('team')['points'].sum().sort_values(ascending=False)
 
-    table = (home_stats + away_stats).fillna(0).sort_values(ascending=False).astype(int)
-
-    return table.reset_index().rename(columns={'index': 'team', 0: 'points'})
+    return table.reset_index()
