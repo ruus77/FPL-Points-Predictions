@@ -38,8 +38,6 @@ def sort_data(df:pd.DataFrame)->pd.DataFrame:
   return df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
 
 
-# utils.py
-
 team_colors = {
     'Arsenal': '#EF0107',
     'Aston Villa': '#95BFE5',
