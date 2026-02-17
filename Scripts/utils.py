@@ -18,7 +18,7 @@ def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
         if not file_path.exists():
             continue
         try:
-            df = pd.read_csv(file_path, encoding='utf-8', low_memory=False)
+            df = pd.read_csv(file_path, encoding='latin-1', low_memory=False).str.decode('utf-8')
             df['season_id'] = season
             dfs.append(df)
 
@@ -36,3 +36,32 @@ def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
   return df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
+
+
+# utils.py
+
+team_colors = {
+    'Arsenal': '#EF0107',
+    'Aston Villa': '#95BFE5',
+    'Bournemouth': '#DA291C',
+    'Brentford': '#E30613',
+    'Brighton': '#0057B8',
+    'Burnley': '#6C1D45',
+    'Chelsea': '#034694',
+    'Crystal Palace': '#1B458F',
+    'Everton': '#003399',
+    'Fulham': '#000000',
+    'Ipswich': '#3A64A3',
+    'Leeds': '#FFCD00',
+    'Leicester': '#0053A0',
+    'Liverpool': '#C8102E',
+    'Man City': '#6CABDD',
+    'Man Utd': '#DA291C',
+    'Newcastle': '#241F20',
+    "Nott'm Forest": '#DD0000',
+    'Southampton': '#D71920',
+    'Spurs': '#132257',
+    'Sunderland': '#EB172B',
+    'West Ham': '#7A263A',
+    'Wolves': '#FDB913'
+}
