@@ -44,9 +44,9 @@ def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
     if "GW" in df.columns:
-        df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
+        df = df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
     if "gw" in df.columns:
-        df.sort_values(by=["name", "kickoff_time", "gw", "season_id"]).reset_index(drop=True)
+        df = df.sort_values(by=["name", "kickoff_time", "gw", "season_id"]).reset_index(drop=True)
     return df
 
 team_colors = {
