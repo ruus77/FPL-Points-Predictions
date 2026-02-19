@@ -1,12 +1,11 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from typing import List
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
+def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
     if season_list is None:
         return pd.DataFrame()
 
@@ -39,8 +38,11 @@ def data_import(season_list: List[str] | None = None) -> pd.DataFrame:
 
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
-  return df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
-
+    if "GW" in df.columns:
+        df.sort_values(by=["name", "kickoff_time", "GW", "season_id"]).reset_index(drop=True)
+    if "gw" in df.columns:
+        df.sort_values(by=["name", "kickoff_time", "gw", "season_id"]).reset_index(drop=True)
+    return df
 
 team_colors = {
     'Arsenal': '#EF0107',
@@ -134,7 +136,7 @@ def expected_stats_vs_actuals(df: pd.DataFrame,
                               season: str | None = None,
                               expected_stat: str | None = None,
                               actual_stat: str | None = None,
-                              position: str | List[str] | None = None) -> plt.Figure:
+                              position: str | list[str] | None = None) -> plt.Figure:
     if (season is None) or (expected_stat is None) or (actual_stat is None) or (position is None):
       return plt.figure()
 
