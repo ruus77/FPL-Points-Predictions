@@ -21,8 +21,13 @@ def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
         if not file_path.exists():
             continue
         try:
-            df = pd.read_csv(file_path, encoding='latin-1', low_memory=False).str.decode('utf-8')
-            df['season_id'] = season
+            df = pd.read_csv(file_path, encoding="latin-1", low_memory=False)
+            text_cols = df.select_dtypes(include=["object"]).columns
+            if len(text_cols) > 0:
+                df[text_cols] = df[text_cols].apply(
+                    lambda s: s.str.encode("latin-1").str.decode("utf-8", errors="ignore")
+                )
+            df["season_id"] = season
             dfs.append(df)
 
         except pd.errors.EmptyDataError:
