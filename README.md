@@ -9,7 +9,7 @@ Projekt ma na celu przewidywanie punktów zdobywanych przez zawodników w grze F
 * `Scripts/` - Skrypty w języku Python zawierające docelowy kod źródłowy, funkcje pomocnicze oraz modele predykcyjne.
 
 ## Wykorzystane technologie
-* Język: Python 3.x
+* Język: Python 3.14
 * Analiza danych: Pandas, NumPy
 * Wizualizacja: Matplotlib, Seaborn
 * Notatniki: Jupyter Notebook
