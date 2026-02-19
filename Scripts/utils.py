@@ -145,9 +145,10 @@ def expected_stats_vs_actuals(df: pd.DataFrame,
         for j, team in enumerate([teams.iloc[i, 0], teams.iloc[-(i+1), 0]]):
             sns.barplot(data=df[(df.team == team) & (df.season_id == season) & (df.position.isin(position))][[expected_stat, actual_stat]].melt(),
                         y="variable", x="value", estimator="sum", errorbar=None, ax=ax[i, j])
-            ax[i, j].set_title(f"{team} ({position})")
+            ax[i, j].set_title(f"{team}")
             ax[i, j].set_ylabel("")
             ax[i, j].set_xlabel("")
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.close(fig)
+    fig.suptitle(f"{expected_stat} vs {actual_stat} dla pozycji {', '.join(position)}")
     return fig
