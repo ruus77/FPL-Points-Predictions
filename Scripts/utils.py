@@ -43,7 +43,7 @@ def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
 def club_data_import(season_list: list[str]):
     url = "https://www.football-data.co.uk/mmz4281"
     data_gen = (
-        pd.read_csv(f"{url}/2{i}2{i+1}/E0.csv").assign(season_id=s).copy()
+        pd.read_csv(f"{url}/2{i}2{i+1}/E0.csv", engine="pyarrow").copy().assign(season_id=s)
         for i, s in enumerate(season_list, 1)
     )
 
