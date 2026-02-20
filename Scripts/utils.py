@@ -40,6 +40,15 @@ def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
 
     return pd.concat(dfs, axis=0, ignore_index=True)
 
+def club_data_import(season_list: list[str]):
+    url = "https://www.football-data.co.uk/mmz4281"
+    data_gen = (
+        pd.read_csv(f"{url}/2{i}2{i+1}/E0.csv").assign(season_id=s).copy()
+        for i, s in enumerate(season_list, 1)
+    )
+
+    return pd.concat(data_gen, ignore_index=True)
+
 
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
@@ -74,6 +83,9 @@ team_colors = {
     'West Ham': '#7A263A',
     'Wolves': '#FDB913'
 }
+
+
+
 
 def best_players_plots(df: pd.DataFrame,
                        num_players: int,
