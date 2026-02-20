@@ -40,15 +40,18 @@ def data_import(season_list: list[str] | None = None) -> pd.DataFrame:
 
     return pd.concat(dfs, axis=0, ignore_index=True)
 
-def club_data_import(season_list: list[str]):
+
+def club_data_import(season_list: list[str]) -> pd.DataFrame:
     url = "https://www.football-data.co.uk/mmz4281"
-    data_gen = (
-        pd.read_csv(f"{url}/2{i}2{i+1}/E0.csv", engine="pyarrow").copy().assign(season_id=s)
-        for i, s in enumerate(season_list, 1)
-    )
+    dfs = []
 
-    return pd.concat(data_gen, ignore_index=True)
+    for s in season_list:
+        season_code = s[2:4] + s[5:7]
+        df = pd.read_csv(f"{url}/{season_code}/E0.csv")
+        df['season_id'] = s
+        dfs.append(df.copy())
 
+    return pd.concat(dfs, ignore_index=True).copy()
 
 
 def sort_data(df:pd.DataFrame)->pd.DataFrame:
