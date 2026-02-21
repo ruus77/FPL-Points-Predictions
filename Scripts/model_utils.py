@@ -1,7 +1,7 @@
 import numpy as np
 import sklearn
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 import pandas as pd
 
 class ModelSelector:
@@ -24,7 +24,7 @@ class ModelSelector:
                     params_grid: list[dict[str, list[str]]],
                     X_train: np.ndarray,
                     y_train: np.ndarray,
-                    cv:int=5,
+                    cv:int=TimeSeriesSplit(n_splits=5),
                     scoring:str | None=None,
                     n_iter: int = 20):
 
