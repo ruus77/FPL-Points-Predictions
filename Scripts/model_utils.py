@@ -3,7 +3,7 @@ import sklearn
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 class ModelSelector:
@@ -126,3 +126,19 @@ def one_hot_encode(X_train:pd.DataFrame,
     return (pd.concat([X_train, enc_train], axis=1).reset_index(drop=True).select_dtypes(include=np.number),
             pd.concat([X_valid, enc_valid], axis=1).reset_index(drop=True).select_dtypes(include=np.number),
             pd.concat([X_test, enc_test], axis=1).reset_index(drop=True).select_dtypes(include=np.number))
+
+
+def scale_data(X_train:pd.DataFrame,
+               X_valid:pd.DataFrame,
+               X_test:pd.DataFrame)->tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    scaler = StandardScaler()
+    scaler.set_output(transform="pandas")
+
+    X_train = scaler.fit_transform(X_train)
+    X_valid = scaler.transform(X_valid)
+    X_test = scaler.transform(X_test)
+
+    return (X_train,
+            X_valid,
+            X_test)
+
