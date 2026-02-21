@@ -94,7 +94,7 @@ class ModelSelector:
 
 
 
-def train_test_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series,
+def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
                                                pd.DataFrame, pd.Series,
                                                pd.DataFrame, pd.Series]:
     df = df.copy()
