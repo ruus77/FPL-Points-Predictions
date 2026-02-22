@@ -1,27 +1,20 @@
 # FPL Points Predictions
 
 ## Opis projektu
-Projekt ma na celu przewidywanie punktów zdobywanych przez zawodników w grze Fantasy Premier League (FPL) z wykorzystaniem technik uczenia maszynowego. Poprzez analizę historycznych statystyk, formy zawodników oraz poziomu trudności nadchodzących spotkań, zbudowane modele mają na celu wsparcie procesu decyzyjnego przy budowie optymalnego składu menedżerskiego.
-
-## Wykorzystane technologie
-* Język programowania: Python 3.14
-* Uczenie maszynowe i Deep Learning: Scikit-Learn, PyTorch
-* Przetwarzanie i analiza danych: Pandas, NumPy
-* Wizualizacja danych: Matplotlib, Seaborn
-* Środowisko analityczne: Jupyter Notebook
+Projekt ma na celu przewidywanie punktów zdobywanych przez zawodników w grze Fantasy Premier League (FPL) z wykorzystaniem technik uczenia maszynowego. Poprzez analizę historycznych statystyk, formy zawodników oraz trudności nadchodzących spotkań, model wspiera proces decyzyjny przy budowie optymalnego składu.
 
 ## Struktura repozytorium
-* `Data/` - Katalog przeznaczony na zbiory danych (surowe oraz przetworzone). Ze względu na rozmiar plików (CSV/Parquet), mogą one być ignorowane w systemie kontroli wersji.
-* `Notebooks/` - Notatniki Jupyter wykorzystywane do eksperymentów, eksploracyjnej analizy danych (EDA) oraz inżynierii cech (Feature Engineering).
-* `Scripts/` - Główny kod źródłowy projektu, obejmujący skrypty operacyjne oraz modele predykcyjne.
-  * `model_utils/` - Autorski pakiet narzędziowy zorganizowany w sposób modułowy:
-    * `data.py` - Logika związana z obsługą i podziałem zbiorów danych.
-    * `preprocessing.py` - Potoki transformacji (Pipeline, ColumnTransformer) oraz klasa `FPLDataPipe` odpowiedzialna za przygotowanie danych dla modeli opartych na bibliotece PyTorch.
-    * `selector.py` - Klasa `ModelSelector` przeznaczona do optymalizacji hiperparametrów, trenowania oraz ewaluacji algorytmów uczenia maszynowego.
+* `Data/` - Katalog przeznaczony na zbiory danych (surowe oraz przetworzone). Ze względu na rozmiar, pliki z danymi mogą być ignorowane w systemie kontroli wersji.
+* `Notebooks/` - Notatniki Jupyter wykorzystywane do eksploracyjnej analizy danych (EDA), inżynierii cech (Feature Engineering) oraz przygotowania danych.
+* `Scripts/` - Skrypty w języku Python zawierające docelowy kod źródłowy, funkcje pomocnicze oraz modele predykcyjne.
 
-## Instrukcja uruchomienia
+## Wykorzystane technologie
+* Język: Python 3.14
+* Analiza danych: Pandas, NumPy
+* Wizualizacja: Matplotlib, Seaborn
+* Notatniki: Jupyter Notebook
 
-1. Sklonuj repozytorium na swój komputer lokalny:
+## Uruchomienie projektu
+1. Sklonuj repozytorium na swój komputer:
    ```bash
    git clone [https://github.com/ruus77/FPL-Points-Predictions.git](https://github.com/ruus77/FPL-Points-Predictions.git)
-   cd FPL-Points-Predictions
