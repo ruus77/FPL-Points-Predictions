@@ -67,7 +67,7 @@ class Trainer:
 
         test_loss = torch.tensor(0.0, device=self.device)
         model = model.to(self.device)
-
+        y_preds = []
         self.mse.reset()
         self.mae.reset()
         self.r2.reset()
@@ -78,6 +78,7 @@ class Trainer:
                 X_test, y_test = X_test.to(self.device), y_test.to(self.device)
 
                 y_pred = model(X_test)
+                y_preds.append(y_pred)
 
                 loss = loss_fn(y_pred, y_test)
                 test_loss += loss.detach()
@@ -92,7 +93,7 @@ class Trainer:
 
         test_loss = test_loss.item() / len(test_dataloader)
 
-        return test_loss, test_mse, test_mae, test_r2
+        return test_loss, test_mse, test_mae, test_r2, torch.cat(y_preds.cpu())
 
     def model_eval(self,
                    train_dataloader: torch.utils.data.DataLoader,
