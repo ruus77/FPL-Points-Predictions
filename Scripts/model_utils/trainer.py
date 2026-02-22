@@ -93,7 +93,7 @@ class Trainer:
 
         test_loss = test_loss.item() / len(test_dataloader)
 
-        return test_loss, test_mse, test_mae, test_r2, torch.cat(y_preds.cpu())
+        return test_loss, test_mse, test_mae, test_r2, torch.cat(y_preds).cpu()
 
     def model_eval(self,
                    train_dataloader: torch.utils.data.DataLoader,
@@ -119,7 +119,7 @@ class Trainer:
                 loss_fn=loss_fn
             )
 
-            test_loss, test_mse, test_mae, test_r2 = self.test_step(
+            test_loss, test_mse, test_mae, test_r2, _ = self.test_step(
                 test_dataloader=test_dataloader,
                 model=model,
                 loss_fn=loss_fn
