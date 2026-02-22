@@ -145,12 +145,6 @@ def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFram
 
     return table.reset_index()
 
-
-
-
-
-
-
 def expected_stats_vs_actuals(df: pd.DataFrame,
                               teams: pd.DataFrame,
                               season: str | None = None,
