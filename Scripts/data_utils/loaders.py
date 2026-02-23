@@ -6,7 +6,6 @@ def vastaav_data_import(season_list: list[str] | None = None) -> pd.DataFrame:
         return pd.DataFrame()
 
     dfs = []
-    # Uwaga: Ścieżka skorygowana o jeden poziom wyżej, bo jesteśmy w folderze data_utils/
     script_dir = Path(__file__).resolve().parent
     project_root = script_dir.parent
     data_path = project_root / "Fantasy-Premier-League" / "data"
