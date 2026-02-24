@@ -9,10 +9,10 @@ def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
                                                pd.DataFrame, pd.Series,
                                                pd.DataFrame, pd.Series]:
     df = df.copy()
-    X = df.drop(columns=["total_points"])
-    y = df["total_points"]
-    X_train, X_valid, X_test = X[X.season_id < "2024-25"], X[X.season_id == "2024-25"], X[X.season_id > "2024-25"]
-    y_train, y_valid, y_test = y[X.season_id < "2024-25"], y[X.season_id == "2024-25"], y[X.season_id > "2024-25"]
+    X = df.drop(columns=["event_points"])
+    y = df["event_points"]
+    X_train, X_valid, X_test = X[X.season_id == 2425], X[(X.season_id == 2425) & (X.gw < X.gw.max()//2)], X[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
+    y_train, y_valid, y_test = y[X.season_id < "2024-25"], y[(X.season_id == 2425) & (X.gw < X.gw.max()//2)], y[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
     return (X_train, y_train,
             X_valid, y_valid,
             X_test, y_test)
