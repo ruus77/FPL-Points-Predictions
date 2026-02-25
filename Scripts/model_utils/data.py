@@ -5,17 +5,30 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 
-def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
-                                               pd.DataFrame, pd.Series,
-                                               pd.DataFrame, pd.Series]:
+def train_test_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series,
+                                                 pd.DataFrame, pd.Series,
+                                                 pd.DataFrame, pd.Series]:
     df = df.copy()
     X = df.drop(columns=["event_points"])
     y = df["event_points"]
-    X_train, X_valid, X_test = X[X.season_id == 2425], X[(X.season_id == 2425) & (X.gw < X.gw.max()//2)], X[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
-    y_train, y_valid, y_test = y[X.season_id == 2425], y[(X.season_id == 2425) & (X.gw < X.gw.max()//2)], y[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
-    return (X_train, y_train,
-            X_valid, y_valid,
-            X_test, y_test)
+
+    latest_season = X.season_id.max()
+    train_mask = X.season_id < latest_season
+    latest_mask = X.season_id == latest_season
+
+    if "gw" in X.columns:
+        gw_mid = X.loc[latest_mask, "gw"].max() // 2
+        valid_mask = latest_mask & (X.gw <= gw_mid)
+        test_mask = latest_mask & (X.gw > gw_mid)
+    else:
+        n_latest = latest_mask.sum()
+        cumsum = latest_mask.cumsum()
+        valid_mask = latest_mask & (cumsum <= n_latest // 2)
+        test_mask = latest_mask & (cumsum > n_latest // 2)
+
+    return (X[train_mask], y[train_mask],
+            X[valid_mask], y[valid_mask],
+            X[test_mask], y[test_mask])
 
 
 

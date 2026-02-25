@@ -87,4 +87,4 @@ class ModelSelector:
 
         sort_column = self.scoring if self.scoring in df_results.columns else "mse"
 
-        return df_results.sort_values(by=sort_column, ascending=False), y_preds
+        return df_results.sort_values(by=sort_column, ascending=True), y_preds

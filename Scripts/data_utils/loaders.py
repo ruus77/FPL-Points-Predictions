@@ -69,7 +69,7 @@ def data_import() -> pd.DataFrame:
                     gw_accumulated.append(pd.merge(df_m, df_p, on=["id", "season", "gw"], suffixes=('', '_dup')))
                 else:
                     gw_accumulated.append(df_m)
-            except:
+            except Exception:
                 continue
 
         if not gw_accumulated:
