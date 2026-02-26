@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from sklearn.preprocessing import RobustScaler, OneHotEncoder
 
 def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
                                                pd.DataFrame, pd.Series,
@@ -28,7 +28,7 @@ class FPLDataPipe:
 
     def _build_pipeline(self):
         num_transform = Pipeline([
-            ("scaler", MinMaxScaler())
+            ("scaler", RobustScaler())
         ])
 
         cols_transform = Pipeline([
