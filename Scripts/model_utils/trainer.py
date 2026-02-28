@@ -38,9 +38,6 @@ class Trainer:
         for batch, (X_train, y_train) in enumerate(train_dataloader):
             X_train, y_train = X_train.to(self.device), y_train.to(self.device)
 
-            if model.__class__.__name__ == "MLP":
-                X_train = X_train.view(X_train.shape[0], -1)
-
             optimizer.zero_grad()
 
             y_pred = model(X_train).view(-1)
@@ -71,7 +68,6 @@ class Trainer:
 
         valid_loss = torch.tensor(0.0, device=self.device)
         model = model.to(self.device)
-
         y_preds = []
         self.mse.reset()
         self.mae.reset()
@@ -79,22 +75,19 @@ class Trainer:
 
         with torch.inference_mode():
             model.eval()
-            for batch, (X_valid, y_valid) in enumerate(valid_dataloader):
-                X_valid, y_valid = X_valid.to(self.device), y_valid.to(self.device)
+            for batch, (X_val, y_val) in enumerate(valid_dataloader):
+                X_val, y_val = X_val.to(self.device), y_val.to(self.device)
 
-                if model.__class__.__name__ == "MLP":
-                    X_valid = X_valid.view(X_valid.shape[0], -1)
-
-                y_pred = model(X_valid).view(-1)
-                y_valid = y_valid.view(-1)
+                y_pred = model(X_val).view(-1)
+                y_val = y_val.view(-1)
                 y_preds.append(y_pred)
 
-                loss = loss_fn(y_pred, y_valid)
+                loss = loss_fn(y_pred, y_val)
                 valid_loss += loss.detach()
 
-                self.mse(y_pred, y_valid)
-                self.mae(y_pred, y_valid)
-                self.r2(y_pred, y_valid)
+                self.mse(y_pred, y_val)
+                self.mae(y_pred, y_val)
+                self.r2(y_pred, y_val)
 
         valid_mse = self.mse.compute().item()
         valid_mae = self.mae.compute().item()
