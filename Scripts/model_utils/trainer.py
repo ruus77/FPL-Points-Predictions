@@ -40,8 +40,7 @@ class Trainer:
 
             optimizer.zero_grad()
 
-            y_pred = model(X_train).view(-1)
-            y_train = y_train.view(-1)
+            y_pred = model(X_train)
 
             loss = loss_fn(y_pred, y_train)
             loss.backward()
@@ -61,12 +60,12 @@ class Trainer:
 
         return train_loss, train_mse, train_mae, train_r2
 
-    def valid_step(self,
-                  valid_dataloader: torch.utils.data.DataLoader,
+    def test_step(self,
+                  test_dataloader: torch.utils.data.DataLoader,
                   model: nn.Module,
                   loss_fn: nn.Module):
 
-        valid_loss = torch.tensor(0.0, device=self.device)
+        test_loss = torch.tensor(0.0, device=self.device)
         model = model.to(self.device)
         y_preds = []
         self.mse.reset()
@@ -75,31 +74,30 @@ class Trainer:
 
         with torch.inference_mode():
             model.eval()
-            for batch, (X_val, y_val) in enumerate(valid_dataloader):
-                X_val, y_val = X_val.to(self.device), y_val.to(self.device)
+            for batch, (X_test, y_test) in enumerate(test_dataloader):
+                X_test, y_test = X_test.to(self.device), y_test.to(self.device)
 
-                y_pred = model(X_val).view(-1)
-                y_val = y_val.view(-1)
+                y_pred = model(X_test)
                 y_preds.append(y_pred)
 
-                loss = loss_fn(y_pred, y_val)
-                valid_loss += loss.detach()
+                loss = loss_fn(y_pred, y_test)
+                test_loss += loss.detach()
 
-                self.mse(y_pred, y_val)
-                self.mae(y_pred, y_val)
-                self.r2(y_pred, y_val)
+                self.mse(y_pred, y_test)
+                self.mae(y_pred, y_test)
+                self.r2(y_pred, y_test)
 
-        valid_mse = self.mse.compute().item()
-        valid_mae = self.mae.compute().item()
-        valid_r2 = self.r2.compute().item()
+        test_mse = self.mse.compute().item()
+        test_mae = self.mae.compute().item()
+        test_r2 = self.r2.compute().item()
 
-        valid_loss = valid_loss.item() / len(valid_dataloader)
+        test_loss = test_loss.item() / len(test_dataloader)
 
-        return valid_loss, valid_mse, valid_mae, valid_r2, torch.cat(y_preds).cpu()
+        return test_loss, test_mse, test_mae, test_r2, torch.cat(y_preds).cpu()
 
     def model_eval(self,
                    train_dataloader: torch.utils.data.DataLoader,
-                   valid_dataloader: torch.utils.data.DataLoader,
+                   test_dataloader: torch.utils.data.DataLoader,
                    model: nn.Module,
                    optimizer: torch.optim.Optimizer,
                    loss_fn: nn.Module,
@@ -121,14 +119,14 @@ class Trainer:
                 loss_fn=loss_fn
             )
 
-            valid_loss, valid_mse, valid_mae, valid_r2, _ = self.valid_step(
-                valid_dataloader=valid_dataloader,
+            test_loss, test_mse, test_mae, test_r2, _ = self.test_step(
+                test_dataloader=test_dataloader,
                 model=model,
                 loss_fn=loss_fn
             )
 
-            if valid_loss < (best_loss - tolerance):
-                best_loss = valid_loss
+            if test_loss < (best_loss - tolerance):
+                best_loss = test_loss
                 counter = 0
             else:
                 counter += 1
@@ -137,19 +135,19 @@ class Trainer:
                     break
 
             results["train_loss"].append(train_loss)
-            results["valid_loss"].append(valid_loss)
+            results["test_loss"].append(test_loss)
             results["train_mse"].append(train_mse)
-            results["valid_mse"].append(valid_mse)
+            results["test_mse"].append(test_mse)
             results["train_mae"].append(train_mae)
-            results["valid_mae"].append(valid_mae)
+            results["test_mae"].append(test_mae)
             results["train_r2"].append(train_r2)
-            results["valid_r2"].append(valid_r2)
+            results["test_r2"].append(test_r2)
 
             log_interval = max(1, int(num_epochs / 10))
             if epoch % log_interval == 0:
-                print(f"Epoch: {epoch} | Train Loss: {train_loss:.4f} | Valid Loss: {valid_loss:.4f}\n"
-                      f"Train MSE: {train_mse:.4f} | Valid MSE: {valid_mse:.4f}\n"
-                      f"Train MAE: {train_mae:.4f} | Valid MAE : {valid_mae:.4f}\n"
-                      f"Train R2: {train_r2:.4f} | Valid R2 : {valid_r2:.4f}")
+                print(f"Epoch: {epoch} | Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f}\n"
+                      f"Train MSE: {train_mse:.4f} | Test MSE: {test_mse:.4f}\n"
+                      f"Train MAE: {train_mae:.4f} | Test MAE : {test_mae:.4f}\n"
+                      f"Train R2: {train_r2:.4f} | Test R2 : {test_r2:.4f}")
 
         return results
