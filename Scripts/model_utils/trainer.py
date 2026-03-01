@@ -6,6 +6,15 @@ from tqdm.auto import tqdm
 from collections import defaultdict
 import copy
 
+
+def set_seed(seed: int = 77):
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+set_seed(77)
+
 class Trainer:
     def __init__(self,
                  device,
