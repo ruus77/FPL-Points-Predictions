@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
-from .config import team_colors
+from .colors_config import team_colors
 
 
 def best_players_plots(df: pd.DataFrame, num_players: int, season: int) -> None:
@@ -40,21 +40,37 @@ def best_players_plots(df: pd.DataFrame, num_players: int, season: int) -> None:
 
 
 def expected_stats_vs_actuals(df: pd.DataFrame, teams: pd.DataFrame, season: int,
-                              expected_stat: str, actual_stat: str, position: any) -> plt.Figure:
-    fig, ax = plt.subplots(3, 2, figsize=(12, 8), sharey=True)
+                              expected_stat: str, actual_stat: str, position: str | list[str]) -> plt.Figure:
+    # POPRAWKA: Dodane sharex=True, to absolutnie kluczowe dla poprawnych wniosków
+    fig, ax = plt.subplots(3, 2, figsize=(14, 10), sharey=True, sharex=True)
     pos_list = position if isinstance(position, list) else [position]
 
     for i in range(3):
+        # Zakładam, że teams.iloc[i, 0] to liderzy, a teams.iloc[-(i + 1), 0] to doły tabeli
         for j, team in enumerate([teams.iloc[i, 0], teams.iloc[-(i + 1), 0]]):
             plot_data = df[(df.team_name == team) & (df.season_id == season) & (df.position.isin(pos_list))]
             melted_data = plot_data[[expected_stat, actual_stat]].melt()
 
             sns.barplot(data=melted_data,
-                        y="variable", x="value", estimator="sum", errorbar=None, ax=ax[i, j])
-            ax[i, j].set_title(f"{team}")
+                        y="variable",
+                        x="value",
+                        estimator="sum",
+                        errorbar=None,
+                        ax=ax[i, j],
+                        palette=["#d3d3d3", "#ff7f0e"]  # Szary dla expected, pomarańczowy dla actual
+                        )
+
+            ax[i, j].set_title(f"{team}", fontweight='bold')
             ax[i, j].set_ylabel("")
-            ax[i, j].set_xlabel("Suma statystyki")
+
+            # Podpisy osi X tylko na samym dole, żeby nie zaśmiecać wykresu
+            ax[i, j].set_xlabel("Suma statystyki" if i == 2 else "")
+
+            # POPRAWKA: Wyświetlanie wartości liczbowych na końcach słupków
+            for container in ax[i, j].containers:
+                ax[i, j].bar_label(container, fmt='%.1f', padding=5)
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])
-    fig.suptitle(f"{expected_stat} vs {actual_stat} dla pozycji {', '.join(pos_list)} (Sezon: {season})")
+    fig.suptitle(f"{expected_stat} vs {actual_stat} dla pozycji {', '.join(pos_list)} (Sezon: {season})", fontsize=16)
+
     return fig

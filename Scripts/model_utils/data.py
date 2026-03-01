@@ -3,21 +3,24 @@ import torch
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import RobustScaler, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 
-def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
-                                               pd.DataFrame, pd.Series,
-                                               pd.DataFrame, pd.Series]:
+
+def train_test_split(df: pd.DataFrame)->dict[str, pd.DataFrame | pd.Series]:
     df = df.copy()
     X = df.drop(columns=["event_points"])
     y = df["event_points"]
-    train_mask = (X.season_id == 2425) & (X.gw <= X.gw.max() * 0.6)
-    valid_mask = (X.season_id == 2425) & (X.gw > X.gw.max() * 0.6) & (X.gw <= X.gw.max() * 0.8)
-    test_mask = (X.season_id == 2425) & (X.gw > X.gw.max() * 0.8)
 
-    return (X[train_mask], y[train_mask],
-            X[valid_mask], y[valid_mask],
-            X[test_mask], y[test_mask])
+    train_mask = (X.season_id == 2425)
+    curr_gw =  X[X.season_id == 2526].gw.max()
+    valid_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw <= curr_gw // 2)
+    test_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw > curr_gw // 2)
+
+    return {
+        "X_train": X[train_mask], "y_train": y[train_mask],
+        "X_valid": X[valid_mask], "y_valid": y[valid_mask],
+        "X_test": X[test_mask], "y_test": y[test_mask]
+    }
 
 
 class FPLDataPipe:
@@ -30,7 +33,7 @@ class FPLDataPipe:
 
     def _build_pipeline(self):
         num_transform = Pipeline([
-            ("scaler", RobustScaler())
+            ("scaler", MinMaxScaler()),
         ])
 
         cols_transform = Pipeline([
@@ -52,8 +55,9 @@ class FPLDataPipe:
             torch.tensor(y.to_numpy().reshape(-1, 1), dtype=torch.float32)
         )
 
-    def prepare_data(self, X_train, X_valid, X_test, y_train, y_valid, y_test):
+    def prepare_data(self, X_train, y_train, X_valid, y_valid, X_test, y_test):
         X_train = self.preprocessor.fit_transform(X_train)
+
         X_valid = self.preprocessor.transform(X_valid)
         X_test = self.preprocessor.transform(X_test)
 

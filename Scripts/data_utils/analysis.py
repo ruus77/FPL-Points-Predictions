@@ -3,12 +3,12 @@ import pandas as pd
 import numpy as np
 
 
-def table_simulation(df: pd.DataFrame, season: str | None = None) -> pd.DataFrame:
+def table_simulation(df: pd.DataFrame, season: int | None = None) -> pd.DataFrame:
     if season is None:
         return pd.DataFrame()
 
     df = df[df['season_id'] == season].copy()
-    matches = df.drop_duplicates(subset=['fixture', 'team']).copy()
+    matches = df.drop_duplicates(subset=['match_id', 'team_name']).copy()
 
     conditions = [
         ((matches['was_home'] == True) & (matches['team_h_score'] > matches['team_a_score'])) |
