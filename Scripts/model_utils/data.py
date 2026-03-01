@@ -45,7 +45,8 @@ class FPLDataPipe:
         preprocessor.set_output(transform="pandas")
         return preprocessor
 
-    def _to_tensor(self, X, y):
+    @staticmethod
+    def _to_tensor(X, y):
         return (
             torch.tensor(X.to_numpy(), dtype=torch.float32),
             torch.tensor(y.to_numpy().reshape(-1, 1), dtype=torch.float32)
@@ -63,7 +64,7 @@ class FPLDataPipe:
         self.train_dataloader = DataLoader(
             TensorDataset(X_train_tensor, y_train_tensor),
             batch_size=self.batch_size,
-            shuffle=False
+            shuffle=True
         )
         self.valid_dataloader = DataLoader(
             TensorDataset(X_valid_tensor, y_valid_tensor),
