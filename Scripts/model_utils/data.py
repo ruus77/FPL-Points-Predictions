@@ -11,12 +11,13 @@ def train_test_split(df: pd.DataFrame)->tuple[pd.DataFrame, pd.Series,
     df = df.copy()
     X = df.drop(columns=["event_points"])
     y = df["event_points"]
-    X_train, X_valid, X_test = X[X.season_id == 2425], X[(X.season_id == 2425) & (X.gw <= X.gw.max()//2)], X[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
-    y_train, y_valid, y_test = y[X.season_id == 2425], y[(X.season_id == 2425) & (X.gw <= X.gw.max()//2)], y[(X.season_id == 2425) & (X.gw > X.gw.max()//2)]
-    return (X_train, y_train,
-            X_valid, y_valid,
-            X_test, y_test)
+    train_mask = (X.season_id == 2425) & (X.gw <= X.gw.max() * 0.6)
+    valid_mask = (X.season_id == 2425) & (X.gw > X.gw.max() * 0.6) & (X.gw <= X.gw.max() * 0.8)
+    test_mask = (X.season_id == 2425) & (X.gw > X.gw.max() * 0.8)
 
+    return (X[train_mask], y[train_mask],
+            X[valid_mask], y[valid_mask],
+            X[test_mask], y[test_mask])
 
 
 class FPLDataPipe:
@@ -25,6 +26,7 @@ class FPLDataPipe:
         self.cat_cols = cat_cols
         self.batch_size = batch_size
         self.preprocessor = self._build_pipeline()
+        self.valid_dataloader, self.train_dataloader, self.test_dataloader = None, None, None
 
     def _build_pipeline(self):
         num_transform = Pipeline([
