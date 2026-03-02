@@ -1,26 +1,36 @@
 # FPL Points Predictions
 
 ## Opis projektu
-Projekt "FPL Points Predictions" ma na celu prognozowanie liczby punktów zdobywanych przez zawodników w grze Fantasy Premier League (FPL). Rozwiązanie opiera się na technikach uczenia maszynowego, analizując dane historyczne, zaawansowane metryki piłkarskie oraz kalendarz spotkań. Projekt stanowi narzędzie analityczne wspomagające podejmowanie decyzji przy optymalizacji składu w nadchodzących kolejkach (Gameweeks).
+Projekt "FPL Points Predictions" dedykowany jest zaawansowanej analizie i prognozowaniu liczby punktów zdobywanych przez zawodników w systemie Fantasy Premier League (FPL). Wykorzystując techniki uczenia maszynowego, system przetwarza dane historyczne, kalendarz spotkań oraz kluczowe metryki piłkarskie w celu optymalizacji decyzji menedżerskich przed nadchodzącymi kolejkami (Gameweeks).
+
+## Kluczowe cele analityczne
+* **Predykcja punktowa**: Szacowanie oczekiwanej liczby punktów (xP) dla zawodników na podstawie modeli statystycznych.
+* **Identyfikacja zawodników typu "Differential"**: Poszukiwanie graczy o niskim współczynniku popularności (niski procent posiadania), którzy generują wysoką liczbę punktów. Strategia ta pozwala na budowanie przewagi nad szeroką populacją graczy poprzez wybór efektywnych, lecz niedocenianych zawodników.
+* **Analiza efektywności kosztowej**: Badanie korelacji między ceną rynkową zawodnika a jego realnym potencjałem punktowym.
+
+## Analiza rozkładu punktów względem popularności
+W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zawodnika (procent posiadania) koreluje z jego wynikami. Poniższa wizualizacja pozwala na szybkie zidentyfikowanie graczy o niskim posiadaniu, którzy osiągają wyniki powyżej średniej rynkowej.
+>
+> *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu*.<img width="872" height="790" alt="popularity_vs_points" src="https://github.com/user-attachments/assets/96e75bef-73ef-4a5f-9536-a338bace6293" />
+
+
+
 
 ## Struktura repozytorium
-Poniższe zestawienie prezentuje podział logiczny plików i katalogów wewnątrz projektu:
-
-* `Data/` - Katalog przeznaczony na zbiory danych wejściowych i wyjściowych. Ze względu na politykę zarządzania przestrzenią w repozytorium, duże pliki danych są ignorowane przez system kontroli wersji (konfiguracja w pliku `.gitignore`).
-* `Notebooks/` - Zbiór notatników Jupyter (format `.ipynb`) wykorzystywanych do eksploracyjnej analizy danych (EDA), testowania hipotez, prototypowania procesów inżynierii cech oraz wstępnej oceny modeli.
-* `Scripts/` - Główny zbiór skryptów napisanych w języku Python. Znajdują się tu moduły odpowiedzialne za przetwarzanie potokowe (pipeline), czyszczenie i transformację zbiorów danych, a także algorytmy implementujące wyuczone modele predykcyjne.
+* **Data/**: Przechowywanie zbiorów danych wejściowych oraz wyników przetworzonych (duże pliki są wyłączone z kontroli wersji).
+* **Notebooks/**: Dokumentacja procesu eksploracyjnej analizy danych (EDA), prototypowanie inżynierii cech oraz walidacja modeli.
+* **Scripts/**: Produkcyjne skrypty Python realizujące procesy ETL oraz algorytmy predykcyjne.
 
 ## Technologie i wymagania
-Projekt został zrealizowany w oparciu o następujący stos technologiczny:
-* **Język:** Python 3.14
-* **Analiza i transformacja danych:** Pandas, NumPy
-* **Wizualizacja wyników:** Matplotlib, Seaborn
-* **Środowisko deweloperskie:** Jupyter Notebook
+* **Język**: Python 3.14
+* **Analiza danych**: Pandas, NumPy
+* **Wizualizacja**: Matplotlib, Seaborn
+* **Modelowanie**: Scikit-learn
 
-## Uruchomienie lokalne
-W celu odtworzenia środowiska i uruchomienia projektu na lokalnej stacji roboczej, zalecane jest korzystanie z izolowanego środowiska wirtualnego. Należy wykonać następujące kroki:
+## Instrukcja uruchomienia lokalnego
+W celu poprawnej konfiguracji środowiska należy wykonać poniższe kroki:
 
-1. Klonowanie repozytorium na dysk lokalny:
+1. Klonowanie repozytorium:
    ```bash
    git clone [https://github.com/ruus77/FPL-Points-Predictions.git](https://github.com/ruus77/FPL-Points-Predictions.git)
    cd FPL-Points-Predictions
