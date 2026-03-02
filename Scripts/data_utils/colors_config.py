@@ -1,3 +1,4 @@
+import seaborn as sns
 team_colors = {
     'Arsenal': '#EF0107',
     'Aston Villa': '#95BFE5',
@@ -141,3 +142,11 @@ FEATURES_GROUP = {
  'ep_this',
  'ep_next']
 }
+
+
+sns.set_theme(rc={
+    'axes.facecolor': 'none',
+    'figure.facecolor': 'none',
+    'savefig.transparent': True
+
+})
