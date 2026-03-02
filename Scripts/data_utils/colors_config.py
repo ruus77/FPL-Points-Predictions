@@ -147,6 +147,10 @@ FEATURES_GROUP = {
 sns.set_theme(rc={
     'axes.facecolor': 'none',
     'figure.facecolor': 'none',
-    'savefig.transparent': True
-
+    'savefig.transparent': True,
+    'axes.grid': True,
+    'grid.color': 'white',
+    'grid.linestyle': '--',
+    'grid.linewidth': 0.5,
+    'grid.alpha': 0.3
 })
