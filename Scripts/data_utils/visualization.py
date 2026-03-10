@@ -7,13 +7,13 @@ from .colors_config import team_colors
 
 def best_players_plots(df: pd.DataFrame, num_players: int, season_id: int) -> None:
     best_df = (df[df.season_id == season_id]
-               .groupby(["web_name", "team_name"])["event_points"].sum()
+               .groupby(["web_name_id", "team_name_id"])["event_points"].sum()
                .reset_index()
                .sort_values("event_points", ascending=False)
                .head(num_players))
 
     plt.figure(figsize=(12, 6))
-    ax1 = sns.barplot(data=best_df, x="event_points", y="web_name_id", hue="team_name",
+    ax1 = sns.barplot(data=best_df, x="event_points", y="web_name_id", hue="team_name_id",
                       palette=team_colors, dodge=False, legend=False)
     for container in ax1.containers:
         ax1.bar_label(container)
@@ -26,7 +26,7 @@ def best_players_plots(df: pd.DataFrame, num_players: int, season_id: int) -> No
                  .sort_values(["web_name_id", "gw_id"])
                  .assign(cum_pts=lambda x: x.groupby("web_name_id")["event_points"].cumsum()))
 
-    player_to_team = dict(zip(best_df.web_name_id, best_df.team_name))
+    player_to_team = dict(zip(best_df.web_name_id, best_df.team_name_id))
     player_palette = {name: team_colors.get(player_to_team[name], "#808080") for name in best_df.web_name_id}
 
     sns.lineplot(data=line_data, x="gw_id", y="cum_pts", hue="web_name_id",
@@ -46,7 +46,7 @@ def expected_stats_vs_actuals(df: pd.DataFrame, teams: pd.DataFrame, season_id: 
 
     for i in range(3):
         for j, team in enumerate([teams.iloc[i, 0], teams.iloc[-(i + 1), 0]]):
-            plot_data = df[(df.team_name == team) & (df.season_id == season_id) & (df.position.isin(pos_list))]
+            plot_data = df[(df.team_name_id == team) & (df.season_id == season_id) & (df.position.isin(pos_list))]
             melted_data = plot_data[[expected_stat, actual_stat]].melt()
 
             sns.barplot(data=melted_data,
