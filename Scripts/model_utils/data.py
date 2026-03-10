@@ -12,9 +12,9 @@ def train_test_split(df: pd.DataFrame)->dict[str, pd.DataFrame | pd.Series]:
     y = df["event_points"]
 
     train_mask = (X.season_id == 2425)
-    curr_gw =  X[X.season_id == 2526].gw.max()
-    valid_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw <= curr_gw // 2)
-    test_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw > curr_gw // 2)
+    curr_gw =  X[X.season_id == 2526].gw_id.max()
+    valid_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw_id <= curr_gw // 2)
+    test_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw_id > curr_gw // 2)
 
     return {
         "X_train": X[train_mask], "y_train": y[train_mask],
