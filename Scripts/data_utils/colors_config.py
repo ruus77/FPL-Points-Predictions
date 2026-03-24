@@ -35,9 +35,21 @@ FEATURES_GROUP = {
 
 "fpl_cols" : ['bonus', 'bps', 'ict_index', 'influence', 'value', 'threat', 'selected', 'transfers_balance', 'transfers_in', 'transfers_out', 'transfers_trend'],
 
-"perf_cols" : ['xp', 'assists', 'clean_sheets', 'creativity', 'expected_assists', 'xg_involvements', 'xg', 'xg_conceded', 'goals_conceded', 'goals_scored', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'yellow_cards', 'team_score', 'opp_score', 'score_diff', 'shots', 'xg_chain', 'xg_buildup', 'key_passes', 'team_points', 'opp_points', 'team_xp', 'opp_xp', 'team_goals', 'opp_goals', 'team_xg', 'opp_xg', 'team_np_xg', 'opp_np_xg', 'team_np_xg_difference', 'opp_np_xg_difference', 'team_ppda', 'opp_ppda', 'team_deep_completions', 'opp_deep_completions', 'team_match_np_xg_diff', 'ppda_diff', 'expected_assists_per_90', 'xg_involvements_per_90', 'xg_per_90', 'xg_conceded_per_90', 'ict_index_per_90', 'xg_chain_per_90', 'xg_buildup_per_90', 'team_xg_per_90', 'opp_xg_per_90', 'team_np_xg_per_90', 'opp_np_xg_per_90', 'team_np_xg_difference_per_90', 'opp_np_xg_difference_per_90', 'team_match_np_xg_diff_per_90', 'xg_share'],
-
-"pre_game_cols" : ["name", "position", "element", "was_home", "opponent_team", "was_home", "gw", "code", "season", "date", "kickoff_time", "player_id", "value", "selected", "transfers_in", "transfers_out", "transfers_balance", "transfers_trend", "team_xp", "opp_xp"]
+"perf_cols" : [
+    'xp', 'assists', 'clean_sheets', 'creativity', 'xa', 'xg_involvements', 'xg',
+    'xg_conceded', 'goals_conceded', 'goals_scored', 'minutes', 'own_goals',
+    'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'yellow_cards',
+    'team_score', 'opp_score', 'score_diff', 'shots', 'xg_chain', 'xg_buildup',
+    'key_passes', 'team_points', 'opp_points', 'team_xp', 'opp_xp', 'team_goals',
+    'opp_goals', 'team_xg', 'opp_xg', 'team_np_xg', 'opp_np_xg', 'team_np_xg_difference',
+    'opp_np_xg_difference', 'team_ppda', 'opp_ppda', 'team_deep_completions',
+    'opp_deep_completions', 'team_match_np_xg_diff', 'ppda_diff', 'xa_per_90',
+    'xg_involvements_per_90', 'xg_per_90', 'xg_conceded_per_90', 'ict_index_per_90',
+    'xg_chain_per_90', 'xg_buildup_per_90', 'team_xg_per_90', 'opp_xg_per_90',
+    'team_np_xg_per_90', 'opp_np_xg_per_90', 'team_np_xg_difference_per_90',
+    'opp_np_xg_difference_per_90', 'team_match_np_xg_diff_per_90', 'xg_share'
+],
+"pre_game_cols" : ["name", "position", "element", "was_home", "opponent_team", "was_home", "gw", "code", "season", "kickoff_time", "value", "selected", "transfers_in", "transfers_out", "transfers_balance", "transfers_trend"]
 }
 
 

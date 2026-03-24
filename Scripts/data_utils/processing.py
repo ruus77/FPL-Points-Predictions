@@ -54,6 +54,6 @@ class FeatureEngineer:
         df_ema, ema_cols = self.ema(window_size=window_size)
         df_lag, lag_cols = self.lag(lag_size=lag_size)
 
-        pre_game_cols = list(set(self.cols_map.get("pre_game_cols", [])))
+        pre_game_cols = list(set(self.cols_map.get("pre_game_cols", []))) + self.cols_map.get("target")
 
-        return pd.concat([df[pre_game_cols], df_ema[ema_cols], df_lag[lag_cols]], axis=1)
+        return pd.concat([df[pre_game_cols], df_ema[ema_cols], df_lag[lag_cols]], axis=1).fillna(0)
