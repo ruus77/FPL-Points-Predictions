@@ -5,7 +5,7 @@ import numpy as np
 import soccerdata as sd
 import config
 
-seasons = ["2022-23", "2023-24", "2024-25", "2025-26"]
+seasons = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"]
 
 class FPLData:
     def __init__(self, season_list: list[str]):
