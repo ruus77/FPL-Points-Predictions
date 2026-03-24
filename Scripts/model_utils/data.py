@@ -8,13 +8,12 @@ from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 
 def train_test_split(df: pd.DataFrame)->dict[str, pd.DataFrame | pd.Series]:
     df = df.copy()
-    X = df.drop(columns=["event_points"])
-    y = df["event_points"]
+    X = df.drop(columns=["total_points"])
+    y = df["total_points"]
 
-    train_mask = (X.season_id == 2425)
-    curr_gw =  X[X.season_id == 2526].gw.max()
-    valid_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw <= curr_gw // 2)
-    test_mask = (X.season_id == 2526) & (X[X.season_id == 2526].gw > curr_gw // 2)
+    train_mask = (X.season.isin([2223, 2324]))
+    valid_mask = (X.season == 2425)
+    test_mask = (X.season == 2526)
 
     return {
         "X_train": X[train_mask], "y_train": y[train_mask],
@@ -37,7 +36,7 @@ class FPLDataPipe:
         ])
 
         cols_transform = Pipeline([
-            ("one_hot", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+            ("one_hot", OneHotEncoder(handle_unknown="ignore", sparse_output=False, drop="first"))
         ])
 
         preprocessor = ColumnTransformer([

@@ -18,7 +18,6 @@ set_seed(77)
 class Trainer:
     def __init__(self,
                  device,
-                 tensor_shape: tuple[int, int],
                  random_state: int = 77
                  ):
 
@@ -26,14 +25,9 @@ class Trainer:
         np.random.seed(random_state)
 
         self.device = device
-        self.p = tensor_shape[1]
-
         self.mse = MeanSquaredError().to(device)
         self.mae = MeanAbsoluteError().to(device)
         self.r2_metric = R2Score().to(device)
-
-    def _calculate_adj_r2(self, r2_val: float, n:int) -> float:
-        return 1 - (1 - r2_val) * (n - 1) / (n - self.p - 1)
 
     def train_step(self,
                    train_dataloader: torch.utils.data.DataLoader,
@@ -67,13 +61,11 @@ class Trainer:
         train_mse = self.mse.compute().item()
         train_mae = self.mae.compute().item()
 
-        raw_r2 = self.r2_metric.compute().item()
-        n_samples = int(len(train_dataloader.dataset))
-        train_r2_adj = self._calculate_adj_r2(raw_r2, n_samples)
+        train_r2 = self.r2_metric.compute().item()
 
         train_loss = train_loss.item() / len(train_dataloader)
 
-        return train_loss, train_mse, train_mae, train_r2_adj
+        return train_loss, train_mse, train_mae, train_r2
 
     def test_step(self,
                   test_dataloader: torch.utils.data.DataLoader,
@@ -106,14 +98,12 @@ class Trainer:
         test_mse = self.mse.compute().item()
         test_mae = self.mae.compute().item()
 
-        raw_r2 = self.r2_metric.compute().item()
+        test_r2 = self.r2_metric.compute().item()
 
-        n_samples = int(len(test_dataloader.dataset))
-        test_r2_adj = self._calculate_adj_r2(raw_r2, n_samples)
 
         test_loss = test_loss.item() / len(test_dataloader)
 
-        return test_loss, test_mse, test_mae, test_r2_adj, torch.cat(y_preds).cpu()
+        return test_loss, test_mse, test_mae, test_r2, torch.cat(y_preds).cpu()
 
     def model_eval(self,
                    train_dataloader: torch.utils.data.DataLoader,
@@ -133,18 +123,35 @@ class Trainer:
 
         for epoch in tqdm(range(num_epochs)):
 
-            train_loss, train_mse, train_mae, train_r2_adj = self.train_step(
+            train_loss, train_mse, train_mae, train_r2 = self.train_step(
                 train_dataloader=train_dataloader,
                 model=model,
                 optimizer=optimizer,
                 loss_fn=loss_fn
             )
 
-            test_loss, test_mse, test_mae, test_r2_adj, _ = self.test_step(
+            test_loss, test_mse, test_mae, test_r2, _ = self.test_step(
                 test_dataloader=test_dataloader,
                 model=model,
                 loss_fn=loss_fn
             )
+
+            results["train_loss"].append(train_loss)
+            results["test_loss"].append(test_loss)
+            results["train_mse"].append(train_mse)
+            results["test_mse"].append(test_mse)
+            results["train_mae"].append(train_mae)
+            results["test_mae"].append(test_mae)
+            results["train_r2"].append(train_r2)
+            results["test_r2"].append(test_r2)
+
+            log_interval = max(1, int(num_epochs / 10))
+            if epoch % log_interval == 0:
+                print(f"Epoch: {epoch} | Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f}\n"
+                      f"Train MSE: {train_mse:.4f} | Test MSE: {test_mse:.4f}\n"
+                      f"Train MAE: {train_mae:.4f} | Test MAE : {test_mae:.4f}\n"
+                      f"Train R2: {train_r2:.4f} | Test R2: {test_r2:.4f}")
+
 
             if test_loss < (best_loss - tolerance):
                 best_loss = test_loss
@@ -156,20 +163,5 @@ class Trainer:
                     print(f"Early stopping | No improvement since {patience} epochs")
                     break
 
-            results["train_loss"].append(train_loss)
-            results["test_loss"].append(test_loss)
-            results["train_mse"].append(train_mse)
-            results["test_mse"].append(test_mse)
-            results["train_mae"].append(train_mae)
-            results["test_mae"].append(test_mae)
-            results["train_r2_adj"].append(train_r2_adj)
-            results["test_r2_adj"].append(test_r2_adj)
-
-            log_interval = max(1, int(num_epochs / 10))
-            if epoch % log_interval == 0:
-                print(f"Epoch: {epoch} | Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f}\n"
-                      f"Train MSE: {train_mse:.4f} | Test MSE: {test_mse:.4f}\n"
-                      f"Train MAE: {train_mae:.4f} | Test MAE : {test_mae:.4f}\n"
-                      f"Train R2 Adj: {train_r2_adj:.4f} | Test R2 Adj: {test_r2_adj:.4f}")
 
         return results, best_model

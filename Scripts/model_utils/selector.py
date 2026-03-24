@@ -65,15 +65,15 @@ class ModelSelector:
 
         return pd.DataFrame(results_list).sort_values(by=f"cv_mean_{scoring}", ascending=False), best_models_map
 
-    def evaluate(self, trained_models_map, X_test, y_test):
+    def evaluate(self, trained_models_map, X_eval, y_eval):
         results_list = []
         y_preds = {}
 
         for name, model in trained_models_map.items():
-            y_pred = model.predict(X_test)
+            y_pred = model.predict(X_eval)
             y_preds[name] = y_pred
 
-            metrics = self.metrics_report(y_pred=y_pred, y_true=y_test)
+            metrics = self.metrics_report(y_pred=y_pred, y_true=y_eval)
 
             row = {
                 "data": "test",
