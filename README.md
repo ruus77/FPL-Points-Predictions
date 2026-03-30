@@ -22,13 +22,11 @@ Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego za
 <br>
 <img width="800" height="800" alt="Statystyki Oczekiwane - Ofensywa" src="https://github.com/user-attachments/assets/31bcd4fe-e3e5-4996-9157-9a60fbe54996" />
 <br>
-*Zestawienie: Erling Haaland, Antoine Semenyo, Mohamed Salah, Bruno Fernandes.*
 
 **Porównanie graczy defensywnych:**
 <br>
 <img width="800" height="800" alt="Statystyki Oczekiwane - Defensywa" src="https://github.com/user-attachments/assets/da30cff3-ca9f-4f2a-9da3-411b28a90917" />
 <br>
-*Zestawienie: Kenny Tete, Marc Guéhi, Lewis Hall, Trevoh Chalobah.*
 
 ## Struktura repozytorium
 * **Data/**: Przechowywanie zbiorów danych wejściowych oraz wyników przetworzonych (duże pliki są wyłączone z kontroli wersji).
