@@ -40,7 +40,7 @@ class Trainer:
         train_loss = torch.tensor(0.0, device=self.device)
         model = model.to(self.device)
         model.train()
-        self.penalty_rate = 5
+        self.penalty_rate = 5.0
         self.mse.reset()
         self.mae.reset()
         self.r2_metric.reset()
