@@ -19,11 +19,13 @@ W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zaw
 Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki (np. GW 29).
 
 **Porównanie graczy ofensywnych:**
-![Statystyki Oczekiwane - Ofensywa](ścieżka/do/image_e6dcfb.png)
+![Statystyki Oczekiwane - Ofensywa](<img width="950" height="850" alt="image" src="https://github.com/user-attachments/assets/31bcd4fe-e3e5-4996-9157-9a60fbe54996" />
+)
 *Zestawienie: Erling Haaland, Antoine Semenyo, Mohamed Salah, Bruno Fernandes.*
 
 **Porównanie graczy defensywnych:**
-![Statystyki Oczekiwane - Defensywa](ścieżka/do/image_e6dd1a.png)
+![Statystyki Oczekiwane - Defensywa](<img width="950" height="850" alt="image" src="https://github.com/user-attachments/assets/da30cff3-ca9f-4f2a-9da3-411b28a90917" />
+)
 *Zestawienie: Kenny Tete, Marc Guéhi, Lewis Hall, Trevoh Chalobah.*
 
 ## Struktura repozytorium
