@@ -10,11 +10,21 @@ Projekt "FPL Points Predictions" dedykowany jest zaawansowanej analizie i progno
 
 ## Analiza rozkładu punktów względem popularności
 W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zawodnika (procent posiadania) koreluje z jego wynikami. Poniższa wizualizacja pozwala na szybkie zidentyfikowanie graczy o niskim posiadaniu, którzy osiągają wyniki powyżej średniej rynkowej.
+
+> *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu.*
 >
-> *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu*<img width="875" height="784" alt="output" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
+> <img width="875" height="784" alt="output" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
+## Analiza Statystyk Oczekiwanych (Wykresy Radarowe)
+Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki (np. GW 29).
 
+**Porównanie graczy ofensywnych:**
+![Statystyki Oczekiwane - Ofensywa](ścieżka/do/image_e6dcfb.png)
+*Zestawienie: Erling Haaland, Antoine Semenyo, Mohamed Salah, Bruno Fernandes.*
 
+**Porównanie graczy defensywnych:**
+![Statystyki Oczekiwane - Defensywa](ścieżka/do/image_e6dd1a.png)
+*Zestawienie: Kenny Tete, Marc Guéhi, Lewis Hall, Trevoh Chalobah.*
 
 ## Struktura repozytorium
 * **Data/**: Przechowywanie zbiorów danych wejściowych oraz wyników przetworzonych (duże pliki są wyłączone z kontroli wersji).
