@@ -11,8 +11,7 @@ Projekt "FPL Points Predictions" dedykowany jest zaawansowanej analizie i progno
 ## Analiza rozkładu punktów względem popularności
 W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zawodnika (procent posiadania) koreluje z jego wynikami. Poniższa wizualizacja pozwala na szybkie zidentyfikowanie graczy o niskim posiadaniu, którzy osiągają wyniki powyżej średniej rynkowej.
 
-> *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu.*
->
+
 > <img width="800" height="800" alt="Rozkład punktów względem popularności" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
 ## Analiza Statystyk Oczekiwanych (Wykresy Radarowe)
