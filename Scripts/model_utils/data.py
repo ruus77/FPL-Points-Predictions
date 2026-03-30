@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader, TensorDataset
@@ -50,6 +51,7 @@ class FPLDataPipe:
     @staticmethod
     def _to_tensor(X, y):
         return (
+
             torch.tensor(X.to_numpy(), dtype=torch.float32),
             torch.tensor(y.to_numpy().reshape(-1, 1), dtype=torch.float32)
         )

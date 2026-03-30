@@ -13,7 +13,9 @@ def set_seed(seed: int = 77):
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
+
 set_seed(77)
+
 
 class Trainer:
     def __init__(self,
@@ -23,7 +25,7 @@ class Trainer:
 
         torch.manual_seed(random_state)
         np.random.seed(random_state)
-
+        self.minutes_idx = 18
         self.device = device
         self.mse = MeanSquaredError().to(device)
         self.mae = MeanAbsoluteError().to(device)
@@ -38,7 +40,7 @@ class Trainer:
         train_loss = torch.tensor(0.0, device=self.device)
         model = model.to(self.device)
         model.train()
-
+        self.penalty_rate = 5
         self.mse.reset()
         self.mae.reset()
         self.r2_metric.reset()
@@ -48,7 +50,17 @@ class Trainer:
 
             optimizer.zero_grad()
             y_pred = model(X_train)
-            loss = loss_fn(y_pred, y_train)
+
+            minutes_ema = X_train[:, self.minutes_idx]
+            minute_weights = (minutes_ema / 90.0) + 0.1
+
+            point_weights = torch.where(y_train > 6.0, self.penalty_rate, 1.0).squeeze()
+
+            final_weights = minute_weights * point_weights
+
+            loss = loss_fn(y_pred, y_train.view_as(y_pred))
+            loss = (loss.squeeze() * final_weights).mean()
+
             loss.backward()
             optimizer.step()
 
@@ -60,7 +72,6 @@ class Trainer:
 
         train_mse = self.mse.compute().item()
         train_mae = self.mae.compute().item()
-
         train_r2 = self.r2_metric.compute().item()
 
         train_loss = train_loss.item() / len(train_dataloader)
@@ -88,7 +99,15 @@ class Trainer:
                 y_pred = model(X_test)
                 y_preds.append(y_pred)
 
-                loss = loss_fn(y_pred, y_test)
+                minutes_ema = X_test[:, self.minutes_idx]
+                minute_weights = (minutes_ema / 90.0) + 0.1
+
+                point_weights = torch.where(y_test > 6.0, self.penalty_rate, 1.0).squeeze()
+                final_weights = minute_weights * point_weights
+
+                loss = loss_fn(y_pred, y_test.view_as(y_pred))
+                loss = (loss.squeeze() * final_weights).mean()
+
                 test_loss += loss.detach()
 
                 self.mse(y_pred, y_test)
@@ -97,9 +116,7 @@ class Trainer:
 
         test_mse = self.mse.compute().item()
         test_mae = self.mae.compute().item()
-
         test_r2 = self.r2_metric.compute().item()
-
 
         test_loss = test_loss.item() / len(test_dataloader)
 
@@ -116,6 +133,13 @@ class Trainer:
                    tolerance: float = 0.01):
 
         best_model = copy.deepcopy(model.state_dict())
+
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            mode='min',
+            factor=0.5,
+            patience=3,
+        )
 
         best_loss = float("inf")
         counter = 0
@@ -136,6 +160,10 @@ class Trainer:
                 loss_fn=loss_fn
             )
 
+            scheduler.step(test_loss)
+
+            current_lr = optimizer.param_groups[0]['lr']
+
             results["train_loss"].append(train_loss)
             results["test_loss"].append(test_loss)
             results["train_mse"].append(train_mse)
@@ -144,14 +172,15 @@ class Trainer:
             results["test_mae"].append(test_mae)
             results["train_r2"].append(train_r2)
             results["test_r2"].append(test_r2)
+            results["lr"].append(current_lr)
 
             log_interval = max(1, int(num_epochs / 10))
             if epoch % log_interval == 0:
-                print(f"Epoch: {epoch} | Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f}\n"
-                      f"Train MSE: {train_mse:.4f} | Test MSE: {test_mse:.4f}\n"
-                      f"Train MAE: {train_mae:.4f} | Test MAE : {test_mae:.4f}\n"
-                      f"Train R2: {train_r2:.4f} | Test R2: {test_r2:.4f}")
-
+                print(
+                    f"Epoch: {epoch} | LR: {current_lr:.6f} | Train Loss: {train_loss:.3f} | Test Loss: {test_loss:.3f}\n"
+                    f"Train MSE: {train_mse:.3f} | Test MSE: {test_mse:.3f}\n"
+                    f"Train MAE: {train_mae:.3f} | Test MAE : {test_mae:.3f}\n"
+                    f"Train R2: {train_r2:.3f} | Test R2: {test_r2:.3f}\n")
 
             if test_loss < (best_loss - tolerance):
                 best_loss = test_loss
@@ -162,6 +191,5 @@ class Trainer:
                 if counter >= patience:
                     print(f"Early stopping | No improvement since {patience} epochs")
                     break
-
 
         return results, best_model
