@@ -14,8 +14,8 @@ W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zaw
 
 > <img width="800" height="800" alt="Rozkład punktów względem popularności" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
-## Analiza Statystyk Oczekiwanych (Wykresy Radarowe)
-Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki (np. GW 29).
+## Analiza Statystyk Oczekiwanych
+Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki.
 
 **Porównanie graczy ofensywnych:**
 <br>
@@ -29,7 +29,7 @@ Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego za
 
 ## Struktura repozytorium
 * **Data/**: Przechowywanie zbiorów danych wejściowych oraz wyników przetworzonych (duże pliki są wyłączone z kontroli wersji).
-* **Notebooks/**: Dokumentacja procesu eksploracyjnej analizy danych (EDA), prototypowanie inżynierii cech oraz walidacja modeli.
+* **Notebooks/**: Dokumentacja procesu eksploracyjnej analizy danych, prototypowanie inżynierii cech oraz walidacja modeli.
 * **Scripts/**: Produkcyjne skrypty Python realizujące procesy ETL oraz algorytmy predykcyjne.
 
 ## Technologie i wymagania
