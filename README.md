@@ -13,20 +13,20 @@ W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zaw
 
 > *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu.*
 >
-> <img width="875" height="784" alt="Rozkład punktów względem popularności" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
+> <img width="800" height="800" alt="Rozkład punktów względem popularności" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
 ## Analiza Statystyk Oczekiwanych (Wykresy Radarowe)
 Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki (np. GW 29).
 
 **Porównanie graczy ofensywnych:**
 <br>
-<img width="950" height="850" alt="Statystyki Oczekiwane - Ofensywa" src="https://github.com/user-attachments/assets/31bcd4fe-e3e5-4996-9157-9a60fbe54996" />
+<img width="800" height="800" alt="Statystyki Oczekiwane - Ofensywa" src="https://github.com/user-attachments/assets/31bcd4fe-e3e5-4996-9157-9a60fbe54996" />
 <br>
 *Zestawienie: Erling Haaland, Antoine Semenyo, Mohamed Salah, Bruno Fernandes.*
 
 **Porównanie graczy defensywnych:**
 <br>
-<img width="950" height="850" alt="Statystyki Oczekiwane - Defensywa" src="https://github.com/user-attachments/assets/da30cff3-ca9f-4f2a-9da3-411b28a90917" />
+<img width="800" height="800" alt="Statystyki Oczekiwane - Defensywa" src="https://github.com/user-attachments/assets/da30cff3-ca9f-4f2a-9da3-411b28a90917" />
 <br>
 *Zestawienie: Kenny Tete, Marc Guéhi, Lewis Hall, Trevoh Chalobah.*
 
