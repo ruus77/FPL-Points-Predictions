@@ -10,15 +10,26 @@ Projekt "FPL Points Predictions" dedykowany jest zaawansowanej analizie i progno
 
 ## Analiza rozkładu punktów względem popularności
 W procesie analitycznym kluczowe znaczenie ma zrozumienie, jak popularność zawodnika (procent posiadania) koreluje z jego wynikami. Poniższa wizualizacja pozwala na szybkie zidentyfikowanie graczy o niskim posiadaniu, którzy osiągają wyniki powyżej średniej rynkowej.
->
-> *Wykres przedstawia zależność punktową dla poszczególnych pozycji (GKP, DEF, MID, FWD). Analiza skupia się na identyfikacji outlierów w lewym górnym kwadrancie każdego podwykresu*<img width="875" height="784" alt="output" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
 
+> <img width="800" height="800" alt="Rozkład punktów względem popularności" src="https://github.com/user-attachments/assets/6bdf8a0b-905d-4411-bbee-93808ce3848e" />
 
+## Analiza Statystyk Oczekiwanych
+Projekt pozwala na bezpośrednie, wizualne porównanie profilu statystycznego zawodników za pomocą wykresów radarowych. Narzędzie to ułatwia zestawienie oczekiwanych metryk w kontekście konkretnej kolejki.
+
+**Porównanie graczy ofensywnych:**
+<br>
+<img width="800" height="800" alt="Statystyki Oczekiwane - Ofensywa" src="https://github.com/user-attachments/assets/31bcd4fe-e3e5-4996-9157-9a60fbe54996" />
+<br>
+
+**Porównanie graczy defensywnych:**
+<br>
+<img width="800" height="800" alt="Statystyki Oczekiwane - Defensywa" src="https://github.com/user-attachments/assets/da30cff3-ca9f-4f2a-9da3-411b28a90917" />
+<br>
 
 ## Struktura repozytorium
 * **Data/**: Przechowywanie zbiorów danych wejściowych oraz wyników przetworzonych (duże pliki są wyłączone z kontroli wersji).
-* **Notebooks/**: Dokumentacja procesu eksploracyjnej analizy danych (EDA), prototypowanie inżynierii cech oraz walidacja modeli.
+* **Notebooks/**: Dokumentacja procesu eksploracyjnej analizy danych, prototypowanie inżynierii cech oraz walidacja modeli.
 * **Scripts/**: Produkcyjne skrypty Python realizujące procesy ETL oraz algorytmy predykcyjne.
 
 ## Technologie i wymagania
