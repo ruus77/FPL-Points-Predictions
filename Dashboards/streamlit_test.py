@@ -92,7 +92,7 @@ if selected_player:
         player_season_data,
         selected_player,
         [s for s in players_x_stats if s in data.columns],
-        curr_season
+        [curr_season]
     )
     st.plotly_chart(fig1)
 
@@ -101,7 +101,7 @@ if selected_player:
         player_season_data,
         selected_player,
         [s for s in teams_x_stats if s in data.columns],
-        curr_season
+        [curr_season]
     )
     st.plotly_chart(fig2)
 
