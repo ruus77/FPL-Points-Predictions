@@ -63,3 +63,22 @@ sns.set_theme(rc={
     'grid.linewidth': 0.5,
     'grid.alpha': 0.3
 })
+
+
+
+players_x_stats = [
+    'xg_per_90', 
+    'xa_per_90', 
+    'shots', 
+    'key_passes', 
+    'ict_index_per_90', 
+    'xg_involvements_per_90'
+]
+
+teams_x_stats = [
+    'team_xg_per_90', 
+    'opp_xg_per_90', 
+    'team_np_xg_difference_per_90', 
+    'team_ppda', 
+    'team_match_np_xg_diff_per_90'
+]
