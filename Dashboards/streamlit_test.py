@@ -23,14 +23,13 @@ from Scripts.data_utils.colors_config import players_x_stats, teams_x_stats
 def load_data():
     df = pd.read_parquet(config.TIDY_DATA_PATH)
     df_ema = pd.read_parquet(config.FPL_DATA_PATH)
-    preds = pd.read_parquet(config.PREDICTED_STATS_PATH)
 
-    for _df in [df, df_ema, preds]:
+    for _df in [df, df_ema]:
         _df.columns = _df.columns.str.strip().str.lower()
     
-    return df, preds, df_ema
+    return df, df_ema
 
-data, preds, data_ema = load_data()
+data, data_ema = load_data()
 
 curr_season = data.season.sort_values().unique()[-1]
 
@@ -102,17 +101,5 @@ if selected_player:
     )
     st.plotly_chart(fig2)
 
-    max_gw = int(preds.gw.max())
-    st.subheader(f"Predictions for the gameweek: {max_gw}")
-    
-    preds_data = preds[preds.gw == max_gw][["name", "y_pred"]]
-    
-    for p in selected_player:
-        p_match = preds_data.loc[preds_data['name'] == p, 'y_pred']
-        if not p_match.empty:
-            val = p_match.item()
-            st.metric(label=p, value=round(val, 2))
-        else:
-            st.write(f"No prediction for {p}")
 else:
     st.info("Please select at least one player from the sidebar to see the analysis.")
