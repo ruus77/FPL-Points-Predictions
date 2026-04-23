@@ -1,25 +1,27 @@
 import pandas as pd
 import streamlit as st
-
 import sys
 from pathlib import Path
 import importlib.util
 
+# 1. Ustalenie ścieżki głównej
 root_path = Path(__file__).resolve().parent.parent
 
+# 2. Import configa (zostawiamy jak jest)
 config_file_path = root_path / "config.py"
 spec = importlib.util.spec_from_file_location("config", config_file_path)
 config = importlib.util.module_from_spec(spec)
 sys.modules["config"] = config
 spec.loader.exec_module(config)
 
-scripts_path = root_path / "Scripts"
-if str(scripts_path) not in sys.path:
-    sys.path.insert(0, str(scripts_path))
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
 
-from data_utils.visualization import radar_plot_x_stats
-from data_utils.colors_config import players_x_stats, teams_x_stats
+# Zmienione importy:
+from Scripts.data_utils.visualization import radar_plot_x_stats
+from Scripts.data_utils.colors_config import players_x_stats, teams_x_stats
 
+# --- KONIEC ZMIAN ---
 
 @st.cache_data
 def load_data():
