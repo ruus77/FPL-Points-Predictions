@@ -1,27 +1,23 @@
 import pandas as pd
 import streamlit as st
 import sys
+import os
 from pathlib import Path
 import importlib.util
 
-# 1. Ustalenie ścieżki głównej
 root_path = Path(__file__).resolve().parent.parent
 
-# 2. Import configa (zostawiamy jak jest)
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
+
 config_file_path = root_path / "config.py"
 spec = importlib.util.spec_from_file_location("config", config_file_path)
 config = importlib.util.module_from_spec(spec)
 sys.modules["config"] = config
 spec.loader.exec_module(config)
 
-if str(root_path) not in sys.path:
-    sys.path.insert(0, str(root_path))
-
-# Zmienione importy:
 from Scripts.data_utils.visualization import radar_plot_x_stats
 from Scripts.data_utils.colors_config import players_x_stats, teams_x_stats
-
-# --- KONIEC ZMIAN ---
 
 @st.cache_data
 def load_data():
@@ -29,9 +25,9 @@ def load_data():
     df_ema = pd.read_parquet(config.FPL_DATA_PATH)
     preds = pd.read_parquet(config.PREDICTED_STATS_PATH)
 
-    df.columns = df.columns.str.strip()
-    df_ema.columns = df_ema.columns.str.strip()
-    preds.columns = preds.columns.str.strip()
+    for _df in [df, df_ema, preds]:
+        _df.columns = _df.columns.str.strip().str.lower()
+    
     return df, preds, df_ema
 
 data, preds, data_ema = load_data()
@@ -73,6 +69,7 @@ if selected_player:
                 st.write(f"{p}: No data available")
 
     st.divider()
+    
     player_season_data = data[(data.name.isin(selected_player)) & (data.season == curr_season)]
     player_season_data = player_season_data.sort_values("gw")
 
@@ -91,7 +88,7 @@ if selected_player:
     fig1 = radar_plot_x_stats(
         player_season_data,
         selected_player,
-        [s for s in players_x_stats if s in data.columns],
+        [s for s in players_x_stats if s.lower() in data.columns],
         [curr_season]
     )
     st.plotly_chart(fig1)
@@ -100,13 +97,16 @@ if selected_player:
     fig2 = radar_plot_x_stats(
         player_season_data,
         selected_player,
-        [s for s in teams_x_stats if s in data.columns],
+        [s for s in teams_x_stats if s.lower() in data.columns],
         [curr_season]
     )
     st.plotly_chart(fig2)
 
-    st.subheader(f"Predictions for the gameweek: {int(preds.gw.max())}")
-    preds_data = preds[(preds.gw == preds.gw.max())][["name", "y_pred"]]
+    max_gw = int(preds.gw.max())
+    st.subheader(f"Predictions for the gameweek: {max_gw}")
+    
+    preds_data = preds[preds.gw == max_gw][["name", "y_pred"]]
+    
     for p in selected_player:
         p_match = preds_data.loc[preds_data['name'] == p, 'y_pred']
         if not p_match.empty:
@@ -114,3 +114,5 @@ if selected_player:
             st.metric(label=p, value=round(val, 2))
         else:
             st.write(f"No prediction for {p}")
+else:
+    st.info("Please select at least one player from the sidebar to see the analysis.")
