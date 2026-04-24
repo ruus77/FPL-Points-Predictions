@@ -3,6 +3,8 @@
 ## Opis projektu
 Projekt "FPL Points Predictions" dedykowany jest zaawansowanej analizie i prognozowaniu liczby punktów zdobywanych przez zawodników w systemie Fantasy Premier League (FPL). Wykorzystując techniki uczenia maszynowego, system przetwarza dane historyczne, kalendarz spotkań oraz kluczowe metryki piłkarskie w celu optymalizacji decyzji menedżerskich przed nadchodzącymi kolejkami (Gameweeks).
 
+Projekt ten stanowi integralny element mojej pracy inżynierskiej, w ramach której skupiam się na praktycznym zastosowaniu zaawansowanych metod analizy danych oraz modelowania predykcyjnego w środowisku sportowym.
+
 ## Kluczowe cele analityczne
 * **Predykcja punktowa**: Szacowanie oczekiwanej liczby punktów (xP) dla zawodników na podstawie modeli statystycznych.
 * **Identyfikacja zawodników typu "Differential"**: Poszukiwanie graczy o niskim współczynniku popularności (niski procent posiadania), którzy generują wysoką liczbę punktów. Strategia ta pozwala na budowanie przewagi nad szeroką populacją graczy poprzez wybór efektywnych, lecz niedocenianych zawodników.
