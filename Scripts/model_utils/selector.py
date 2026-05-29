@@ -3,6 +3,7 @@ import pandas as pd
 import sklearn
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
+from catboost import CatBoostRegressor, Pool
 
 class ModelSelector:
 
@@ -17,16 +18,7 @@ class ModelSelector:
         r2 = r2_score(y_true, y_pred)
 
         return mse, mae, r2
-
-    def params_search(self,
-                    models: list[sklearn.base.BaseEstimator],
-                    models_names: list[str],
-                    params_grid: list[dict[str, list[str]]],
-                    X_train: np.ndarray,
-                    y_train: np.ndarray,
-                    cv:int=5,
-                    scoring:str | None=None,
-                    n_iter: int = 20):
+    def params_search(self, models, models_names, params_grid, X_train, y_train, cv: int = 5, scoring: str | None = None, n_iter: int = 20, cat_features: list[str] | None = None):
 
         scoring = scoring if scoring else self.scoring
 
@@ -40,11 +32,19 @@ class ModelSelector:
                                                scoring=scoring,
                                                param_distributions=grid,
                                                verbose=1,
-                                               n_jobs=-1,
                                                error_score="raise",
                                                random_state=self.random_state,
                                                refit=True)
-            random_search.fit(X_train, y_train)
+
+            if isinstance(model, CatBoostRegressor):
+                random_search.fit(
+                    X_train,
+                    y_train,
+                    cat_features=cat_features
+                )
+            else:
+                random_search.fit(X_train, y_train)
+            
 
             best_models_map[name] = random_search.best_estimator_
             cv_score = random_search.best_score_

@@ -1,3 +1,19 @@
+# Foldery konfiguracyjne i tymczasowe środowiska
 .config/
 sample_data/
+.venv/
+venv/
+env/
+
+# Python (pliki kompilacji i pamięci podręcznej)
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Pliki __init__ (Jeśli na pewno chcesz je ignorować w tym folderze)
+__init__
+__init__/
+
+# Pliki systemowe (opcjonalnie, ale bardzo przydatne)
+.DS_Store
+Thumbs.db

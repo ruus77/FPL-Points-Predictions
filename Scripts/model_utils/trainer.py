@@ -51,15 +51,9 @@ class Trainer:
             optimizer.zero_grad()
             y_pred = model(X_train)
 
-            minutes_ema = X_train[:, self.minutes_idx]
-            minute_weights = (minutes_ema / 90.0) + 0.1
 
-            point_weights = torch.where(y_train > 6.0, self.penalty_rate, 1.0).squeeze()
-
-            final_weights = minute_weights * point_weights
 
             loss = loss_fn(y_pred, y_train.view_as(y_pred))
-            loss = (loss.squeeze() * final_weights).mean()
 
             loss.backward()
             optimizer.step()
@@ -99,14 +93,9 @@ class Trainer:
                 y_pred = model(X_test)
                 y_preds.append(y_pred)
 
-                minutes_ema = X_test[:, self.minutes_idx]
-                minute_weights = (minutes_ema / 90.0) + 0.1
 
-                point_weights = torch.where(y_test > 6.0, self.penalty_rate, 1.0).squeeze()
-                final_weights = minute_weights * point_weights
 
                 loss = loss_fn(y_pred, y_test.view_as(y_pred))
-                loss = (loss.squeeze() * final_weights).mean()
 
                 test_loss += loss.detach()
 
